@@ -1,0 +1,29 @@
+---
+
+name: tagme
+author: norwd
+description: "GitHub Action to manage tags"
+
+branding:
+  icon: tag
+  color: blue
+
+inputs:
+  token:
+    description: "Used to authenticate with GitHub, this should be a PAT with `repo: write` and `workflow: write` permissions."
+
+  tag-name:
+    description: "<TODO>"
+
+  tag-message:
+    description: "<TODO>"
+
+  tag-object:
+    description: "<TODO>"
+
+runs:
+  using: "composite"
+  steps:
+    - name: "<TODO>"
+      run: |
+        echo <TODO>
