@@ -12,13 +12,13 @@ inputs:
   token:
     description: "Used to authenticate with GitHub, this should be a PAT with `repo: write` and `workflow: write` permissions."
 
-  tag-name:
+  tag:
     description: "<TODO>"
 
-  tag-message:
+  message:
     description: "<TODO>"
 
-  tag-object:
+  ref:
     description: "<TODO>"
 
 runs:
