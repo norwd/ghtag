@@ -82,14 +82,14 @@ runs:
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${PAT}"\
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          -d '{ \
-            "tag": "${TAG}", \
-            "message": "${MSG}", \
-            "object": "${REF}", \
-            "type": "commit", \
-            "tagger": { \
-              "name": "${USR}", \
-              "email": "${EML}", \
-              "date": "$(date +"%Y-%m-%dT%H:%M:%S%z")" \
+          -d "{ \
+            \"tag\": \"${TAG}\", \
+            \"message\": \"${MSG}\", \
+            \"object\": \"${REF}\", \
+            \"type\": \"commit\", \
+            \"tagger\": { \
+              \"name": \"${USR}\", \
+              \"email": \"${EML}\", \
+              \"date\": \"$(date +"%Y-%m-%dT%H:%M:%S%z")\" \
             } \
-          }'
+          }"
