@@ -13,10 +13,12 @@ inputs:
     description: "Used to authenticate with GitHub, this should be a PAT with `repo: write` permissions."
 
   username:
-    description: "<TODO>"
+    default: "github-actions[bot]"
+    description: "Who the tag should be attributed to, defaults to the GitHub Actions bot."
 
   email:
-    description: "<TODO>"
+    default: "41898282+github-actions[bot]@users.noreply.github.com"
+    description: "Who the tag should be attributed to, defaults to the GitHub Actions bot."
 
   tag:
     description: "<TODO>"
