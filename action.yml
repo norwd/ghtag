@@ -1,6 +1,6 @@
 ---
 
-name: tagme
+name: ghtag
 author: norwd
 description: "GitHub Action to manage tags"
 
