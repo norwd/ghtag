@@ -5,7 +5,7 @@ run-name: "Create Release `${{ inputs.tag }}`"
 permissions: {}
 
 on:
-  workflow-dispatch:
+  workflow_dispatch:
     inputs:
       tag:
         required: true
@@ -23,6 +23,6 @@ jobs:
       contents: write
     steps:
       - name: "Tag ${{ inputs.tag }} at ${{ github.ref }}"
-        uses: norwd/tagme@fb9b95c
+        uses: norwd/tagme@fb9b95c11668bf3ba7c9c87036b368436d4d360f
         with:
           tag: ${{ inputs.tag }}
