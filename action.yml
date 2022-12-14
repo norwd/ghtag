@@ -13,11 +13,9 @@ inputs:
     description: "Used to authenticate with GitHub, this should be a PAT with `repo: write` permissions."
 
   username:
-    default: "github-actions[bot]"
     description: "Who the tag should be attributed to, defaults to the GitHub Actions bot."
 
   email:
-    default: "41898282+github-actions[bot]@users.noreply.github.com"
     description: "Who the tag should be attributed to, defaults to the GitHub Actions bot."
 
   tag:
@@ -35,26 +33,62 @@ runs:
   steps:
     - name: "Create Tag"
       env:
-        TOKEN: ${{ inputs.token }}
-        USERNAME: ${{ inputs.username }}
-        EMAIL: ${{ inputs.email }}
+        PAT: ${{ inputs.token || secrets.GITHUB_TOKEN }}
+        USR: ${{ inputs.username || 'github-actions[bot]' }}
+        EML: ${{ inputs.email || '41898282+github-actions[bot]@users.noreply.github.com' }}
         TAG: ${{ inputs.tag }}
-        REF: ${{ inputs.ref }}
+        MSG: ${{ inputs.message || 'inputs.tag' }}
+        REF: ${{ inputs.ref || github.ref }}
       run: |
-        curl \
-          https://api.github.com/repos/${{ github.repository }}/git/tags \
+        if [ -z "${PAT}" ]
+        then
+          echo "::error::No token provided!"
+          exit 1
+        fi
+
+        if [ -z "${USR}" ]
+        then
+          echo "::error::No username provided"
+          exit 1
+        fi
+
+        if [ -z "${EML}" ]
+        then
+          echo "::error::No email provided"
+          exit 1
+        fi
+
+        if [ -z "${TAG}" ]
+        then
+          echo "::error::No tag name provided"
+          exit 1
+        fi
+
+        if [ -z "${MSG}" ]
+        then
+          echo "::error::No tag message provided"
+          exit 1
+        fi
+
+        if [ -z "${REF}" ]
+        then
+          echo "::error::No commit to tag specified"
+          exit 1
+        fi
+
+        curl https://api.github.com/repos/${{ github.repository }}/git/tags \
           -X POST \
           -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer ${TOKEN}"\
+          -H "Authorization: Bearer ${PAT}"\
           -H "X-GitHub-Api-Version: 2022-11-28" \
           -d '{ \
             "tag": "${TAG}", \
-            "message": "initial version", \
+            "message": "${MSG}", \
             "object": "${REF}", \
             "type": "commit", \
             "tagger": { \
-              "name": "${USERNAME}", \
-              "email": "${EMAIL}", \
+              "name": "${USR}", \
+              "email": "${EML}", \
               "date": "$(date +"%Y-%m-%dT%H:%M:%S%z")" \
             } \
           }'
