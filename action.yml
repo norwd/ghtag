@@ -10,7 +10,7 @@ branding:
 
 inputs:
   token:
-    description: "Used to authenticate with GitHub, this should be a PAT with `repo: write` and `workflow: write` permissions."
+    description: "Used to authenticate with GitHub, this should be a PAT with `repo: write` permissions."
 
   tag:
     description: "<TODO>"
