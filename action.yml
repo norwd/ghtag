@@ -39,6 +39,7 @@ runs:
         TAG: ${{ inputs.tag }}
         MSG: ${{ inputs.message || 'inputs.tag' }}
         REF: ${{ inputs.ref || github.ref }}
+      shell: bash
       run: |
         if [ -z "${PAT}" ]
         then
