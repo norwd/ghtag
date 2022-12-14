@@ -30,18 +30,18 @@ inputs:
 
 runs:
   using: "composite"
+  env:
+    GH_TOKEN: ${{ inputs.token || github.token }}
+    USERNAME: ${{ inputs.username || 'github-actions[bot]' }}
+    USERMAIL: ${{ inputs.email || '41898282+github-actions[bot]@users.noreply.github.com' }}
+    TAG_NAME: ${{ inputs.tag }}
+    TAG_MESG: ${{ inputs.message || inputs.tag }}
+    TAG_HASH: ${{ inputs.ref || github.sha }}
   steps:
-    - name: "Create Tag"
-      env:
-        GH_TOKEN: ${{ inputs.token || github.token }}
-        USERNAME: ${{ inputs.username || 'github-actions[bot]' }}
-        USERMAIL: ${{ inputs.email || '41898282+github-actions[bot]@users.noreply.github.com' }}
-        TAG_NAME: ${{ inputs.tag }}
-        TAG_MESG: ${{ inputs.message || inputs.tag }}
-        TAG_HASH: ${{ inputs.ref || github.sha }}
+    - name: "Create Tag Object"
       shell: bash
       run: |
-        gh api repos/norwd/tagme/git/tags -X POST --input - << EOF
+        gh api repos/${{ github.repository }}/git/tags -X POST --input - << EOF
         {
           "tag": "${TAG_NAME}",
           "message": "${TAG_MESG}",
@@ -52,5 +52,14 @@ runs:
             "email": "${USERMAIL}",
             "date": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
           }
+        }
+        EOF
+    - name: "Create Tag Reference"
+      shell: bash
+      run: |
+        gh api repos/${{ github.repository }}/git/refs -X POST --input - << EOF
+        {
+          "ref": "refs/tags/${TAG_NAME}",
+          "sha": "${TAG_HASH}"
         }
         EOF
