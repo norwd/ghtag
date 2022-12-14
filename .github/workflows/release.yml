@@ -23,6 +23,6 @@ jobs:
       contents: write
     steps:
       - name: "Tag ${{ inputs.tag }} at ${{ github.ref }}"
-        uses: norwd/tagme@5ce56a69d3d650d1e768fbe828774fb0853ae005
+        uses: norwd/tagme@345ff682ca482e009b088e3ed65184594c4ba4f3
         with:
           tag: ${{ inputs.tag }}
