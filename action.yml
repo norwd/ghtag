@@ -38,7 +38,7 @@ runs:
         EML: ${{ inputs.email || '41898282+github-actions[bot]@users.noreply.github.com' }}
         TAG: ${{ inputs.tag }}
         MSG: ${{ inputs.message || inputs.tag }}
-        REF: ${{ inputs.ref || github.ref }}
+        REF: ${{ inputs.ref || github.sha }}
       shell: bash
       run: |
         if [ -z "${PAT}" ]
@@ -88,7 +88,7 @@ runs:
           "tagger": {
             "name": "${USR}",
             "email": "${EML}",
-            "date": "$(date +"%Y-%m-%dT%H:%M:%S%Z")"
+            "date": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
           }
         }
         EOF
