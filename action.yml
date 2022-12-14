@@ -37,7 +37,7 @@ runs:
         USR: ${{ inputs.username || 'github-actions[bot]' }}
         EML: ${{ inputs.email || '41898282+github-actions[bot]@users.noreply.github.com' }}
         TAG: ${{ inputs.tag }}
-        MSG: ${{ inputs.message || 'inputs.tag' }}
+        MSG: ${{ inputs.message || inputs.tag }}
         REF: ${{ inputs.ref || github.ref }}
       shell: bash
       run: |
