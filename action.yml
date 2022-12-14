@@ -33,7 +33,7 @@ runs:
   steps:
     - name: "Create Tag"
       env:
-        PAT: ${{ inputs.token || secrets.GITHUB_TOKEN }}
+        PAT: ${{ inputs.token || github.token }}
         USR: ${{ inputs.username || 'github-actions[bot]' }}
         EML: ${{ inputs.email || '41898282+github-actions[bot]@users.noreply.github.com' }}
         TAG: ${{ inputs.tag }}
