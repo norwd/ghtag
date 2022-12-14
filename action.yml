@@ -21,13 +21,14 @@ inputs:
     description: "Who the tag should be attributed to, defaults to the GitHub Actions bot."
 
   tag:
-    description: "<TODO>"
+    required: true
+    description: "The tag to create or update, e.g. `v1.2.3`."
 
   message:
-    description: "<TODO>"
+    description: "An optional message to annotate the tag with."
 
   ref:
-    description: "<TODO>"
+    description: "Which git object to tag, defaults to `GITHUB_REF`."
 
 runs:
   using: "composite"
