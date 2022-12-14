@@ -12,6 +12,12 @@ inputs:
   token:
     description: "Used to authenticate with GitHub, this should be a PAT with `repo: write` permissions."
 
+  username:
+    description: "<TODO>"
+
+  email:
+    description: "<TODO>"
+
   tag:
     description: "<TODO>"
 
