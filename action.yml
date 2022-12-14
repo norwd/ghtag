@@ -30,15 +30,15 @@ inputs:
 
 runs:
   using: "composite"
-  env:
-    GH_TOKEN: ${{ inputs.token || github.token }}
-    USERNAME: ${{ inputs.username || 'github-actions[bot]' }}
-    USERMAIL: ${{ inputs.email || '41898282+github-actions[bot]@users.noreply.github.com' }}
-    TAG_NAME: ${{ inputs.tag }}
-    TAG_MESG: ${{ inputs.message || inputs.tag }}
-    TAG_HASH: ${{ inputs.ref || github.sha }}
   steps:
     - name: "Create Tag Object"
+      env:
+        GH_TOKEN: ${{ inputs.token || github.token }}
+        USERNAME: ${{ inputs.username || 'github-actions[bot]' }}
+        USERMAIL: ${{ inputs.email || '41898282+github-actions[bot]@users.noreply.github.com' }}
+        TAG_NAME: ${{ inputs.tag }}
+        TAG_MESG: ${{ inputs.message || inputs.tag }}
+        TAG_HASH: ${{ inputs.ref || github.sha }}
       shell: bash
       run: |
         gh api repos/${{ github.repository }}/git/tags -X POST --input - << EOF
@@ -54,7 +54,12 @@ runs:
           }
         }
         EOF
+
     - name: "Create Tag Reference"
+      env:
+        GH_TOKEN: ${{ inputs.token || github.token }}
+        TAG_NAME: ${{ inputs.tag }}
+        TAG_HASH: ${{ inputs.ref || github.sha }}
       shell: bash
       run: |
         gh api repos/${{ github.repository }}/git/refs -X POST --input - << EOF
