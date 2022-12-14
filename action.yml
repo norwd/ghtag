@@ -77,7 +77,7 @@ runs:
           exit 1
         fi
 
-        echo "TOKEN=${PATH}" >> "${GITHUB_ENV}"
+        echo "TOKEN=${PAT}" >> "${GITHUB_ENV}"
         echo "REQUEST<<EOF" >> "${GITHUB_ENV}"
         cat << EOF | tee -a "${GITHUB_ENV}"
         {
