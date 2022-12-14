@@ -31,76 +31,26 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: "Validate Config"
+    - name: "Create Tag"
       env:
-        PAT: ${{ inputs.token || github.token }}
-        USR: ${{ inputs.username || 'github-actions[bot]' }}
-        EML: ${{ inputs.email || '41898282+github-actions[bot]@users.noreply.github.com' }}
-        TAG: ${{ inputs.tag }}
-        MSG: ${{ inputs.message || inputs.tag }}
-        REF: ${{ inputs.ref || github.sha }}
+        GH_TOKEN: ${{ inputs.token || github.token }}
+        USERNAME: ${{ inputs.username || 'github-actions[bot]' }}
+        USERMAIL: ${{ inputs.email || '41898282+github-actions[bot]@users.noreply.github.com' }}
+        TAG_NAME: ${{ inputs.tag }}
+        TAG_MESG: ${{ inputs.message || inputs.tag }}
+        TAG_HASH: ${{ inputs.ref || github.sha }}
       shell: bash
       run: |
-        if [ -z "${PAT}" ]
-        then
-          echo "::error::No token provided!"
-          exit 1
-        fi
-
-        if [ -z "${USR}" ]
-        then
-          echo "::error::No username provided"
-          exit 1
-        fi
-
-        if [ -z "${EML}" ]
-        then
-          echo "::error::No email provided"
-          exit 1
-        fi
-
-        if [ -z "${TAG}" ]
-        then
-          echo "::error::No tag name provided"
-          exit 1
-        fi
-
-        if [ -z "${MSG}" ]
-        then
-          echo "::error::No tag message provided"
-          exit 1
-        fi
-
-        if [ -z "${REF}" ]
-        then
-          echo "::error::No commit to tag specified"
-          exit 1
-        fi
-
-        echo "TOKEN=${PAT}" >> "${GITHUB_ENV}"
-        echo "REQUEST<<EOF" >> "${GITHUB_ENV}"
-        cat << EOF | tee -a "${GITHUB_ENV}"
+        gh api repos/norwd/tagme/git/tags -X POST --input - << EOF
         {
-          "tag": "${TAG}",
-          "message": "${MSG}",
-          "object": "${REF}",
+          "tag": "${TAG_NAME}",
+          "message": "${TAG_MESG}",
+          "object": "${TAG_HASH}",
           "type": "commit",
           "tagger": {
-            "name": "${USR}",
-            "email": "${EML}",
+            "name": "${USERNAME}",
+            "email": "${USERMAIL}",
             "date": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
           }
         }
         EOF
-        echo "EOF" >> "${GITHUB_ENV}"
-
-    - name: "Create Tag"
-      shell: bash
-      run: |
-        curl https://api.github.com/repos/${{ github.repository }}/git/tags \
-          -X POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer ${TOKEN}"\
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          -d "${REQUEST}" \
-          --fail
