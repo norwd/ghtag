@@ -1,0 +1,28 @@
+---
+
+name: "Create Release"
+run-name: "Create Release `${{ inputs.tag }}`"
+permissions: {}
+
+on:
+  workflow-dispatch:
+    inputs:
+      tag:
+        required: true
+        description: "The tag to create."
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  tag:
+    name: "Tag ${{ inputs.tag }}"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: "Tag ${{ inputs.tag }} at ${{ github.ref }}"
+        uses: norwd/tagme@fb9b95c
+        with:
+          tag: ${{ inputs.tag }}
